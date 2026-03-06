@@ -1,7 +1,12 @@
 import { CONFIG_PROPS } from "./oafConstants";
 
-// URL params would be used when initializing the OAF instance
-let urlParams = new URLSearchParams(document.location.search);
+// URL params are only available in the browser. At build time (e.g. Vercel) document is undefined.
+const getUrlParams = () =>
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.document.location.search)
+    : new URLSearchParams();
+
+const urlParams = getUrlParams();
 
 /**
  * Determines the Coupa host URL based on environment and URL parameters.
@@ -21,7 +26,9 @@ const getCoupaHost = () => {
 };
 
 /**
- * Validates the configuration object
+ * Validates the configuration object.
+ * Iframe ID is only required at runtime when the app is loaded in the browser inside Coupa (URL has params).
+ * At build time (e.g. Vercel) there is no document/window or URL params, so we skip iframeId check then.
  * @param {OafConfig} config - Configuration to validate
  * @throws {Error} If required properties are missing
  */
@@ -32,7 +39,8 @@ const validateConfig = (config) => {
   if (!config.coupahost) {
     throw new Error("Coupa host is required for OAF configuration");
   }
-  if (!config.iframeId && import.meta.env.PROD) {
+  const isBuildTime = typeof window === "undefined";
+  if (!config.iframeId && import.meta.env.PROD && !isBuildTime) {
     throw new Error("Iframe ID not found in URL parameters");
   }
 };
