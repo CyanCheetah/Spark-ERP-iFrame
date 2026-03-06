@@ -36,7 +36,7 @@
     "eventemitter3": "^4.0.7"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json && rollup --config",
+    "build": "rollup --config",
     "test": "jest",
     "clean": "rm -rf .turbo dist"
   }

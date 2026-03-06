@@ -7,7 +7,7 @@ const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
 /** @type {import('rollup').RollupOptions} */
 export default {
-  input: "./src/index.ts",
+  input: "./src/index.js",
   plugins: [
     externals({ deps: true, packagePath: "./package.json" }),
     nodeResolve({ extensions }),
@@ -22,15 +22,11 @@ export default {
   output: [
     {
       format: "cjs",
-      dir: "dist",
-      preserveModules: true,
-      entryFileNames: "[name][assetExtname].cjs.js",
+      file: "dist/index.cjs.js",
     },
     {
       format: "esm",
-      dir: "dist",
-      preserveModules: true,
-      entryFileNames: "[name][assetExtname].esm.js",
+      file: "dist/index.esm.js",
     },
   ],
 };

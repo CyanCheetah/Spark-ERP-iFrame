@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:oaf-client && vite build",
+    "build:oaf-client": "cd packages/@coupa/open-assistant-framework-client && npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest"
